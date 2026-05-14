@@ -1,21 +1,85 @@
-# QRC tutorials
- A set of tutorials for quantum reservoir learning. The tutorials reproduce proof-of-concept simulations and experiments from QuEra's [Large-scale quantum reservoir learning with an analog quantum computer paper](https://arxiv.org/abs/2407.02553). The tutorials are built on [Bloqade.jl](https://github.com/QuEraComputing/Bloqade.jl) and [Bloqade](https://github.com/QuEraComputing/bloqade-python) neutral atom quantum computing SDKs.
+# Quantum Reservoir Computing (QRC) Tutorials
 
- [<img src="https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png" width="150">](https://account.qbraid.com?gitHubUrl=https://github.com/QuEraComputing/QRC-tutorials.git)
+[![Launch on qBraid](https://qbraid-static.s3.amazonaws.com/logos/Launch_on_qBraid_white.png)](https://account.qbraid.com?gitHubUrl=https://github.com/QuEraComputing/QRC-tutorials.git)
 
+---
 
 ## Overview
+
 ![Overview of the quantum reservoir computing algorithm with QuEra's Aquila.](Images/QRC_overview.png)
 
-The QRC algorithm pipeline contains three steps -- classical preprocessing (left), quantum reservoir (center), and classical postprocessing and prediction (right). In the preprocessing step, data features are brought into a form readily encoded to the neutral-atom analog quantum computer. They may require optional dimensional reduction for high-dimensional data (such as images, top) or feature engineering and selection (such as data windowing for timeseries, bottom). The encoding of the data features proceeds by three methods, i.e, encoding into the time profile of the global detuning pulse, the interaction strengths by atom position modulation, and the local pattern of the detuning pulse. The quantum system serving as the reservoir is then evolved over varying time periods and probed through repeated projective measurements. In the third step, the measurement outputs are processed classically to provide expectation values of local observables that form a set of QRC embeddings. The embeddings are subsequently used as inputs to a simple and fast classical training step, for which we typically employ linear support vector machines or regression. The trained models are tested and used for inference by processing additional data through the QRC pipeline and evaluating classical outputs based on obtained embeddings.
+The QRC pipeline consists of three stages:
+
+1. **Classical preprocessing** – Convert raw data into a format that can be encoded on a neutral‑atom analog quantum computer (e.g., dimensionality reduction for images or feature engineering for time‑series).
+2. **Quantum reservoir** – Encode the preprocessed features using one of three methods:
+   - Global detuning pulse profile
+   - Interaction‑strength modulation via atom‑position changes
+   - Local detuning pulse pattern
+   The quantum system evolves for a variable duration and is probed through projective measurements.
+3. **Classical post‑processing** – Convert measurement outcomes into expectation values of local observables, forming the QRC embeddings. These embeddings are fed to a lightweight classical model (typically a linear SVM or linear regression) for training and inference.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Python** ≥ 3.9 – Install the required packages with:
+
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+- **Bloqade SDK** – The Python package `bloqade` is installed automatically via the requirements above and provides the neutral‑atom simulation and hardware‑submission tools.
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/QuEraComputing/QRC-tutorials.git
+cd QRC-tutorials/QRC-tutorials
+
+# Set up a Python virtual environment (optional but recommended)
+python -m venv env
+# Windows:
+env\\Scripts\\activate
+# Unix/macOS:
+source env/bin/activate
+#or use conda
+conda create --name qrc python=3.11
+conda activate qrc
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+---
 
 ## Contents
 
- The starting point of the tutorial is a proof-of-concept simulations based on [Bloqade.jl](https://github.com/QuEraComputing/Bloqade.jl), `QRC Demo MNIST.ipynb`. The notebook covers the basic quantum reservoir learning pipeline on an MNIST dataset example. The starting notebook introduces local detuning encoding, the choice of Hamiltonian parameter regime, and comparison with classical neural nets.
+| Notebook | Description |
+| --- | --- |
+| `QRC Demo MNIST.ipynb` | End‑to‑end QRC workflow on the MNIST digit dataset (Python). |
+| `QRC Demo Timeseries.ipynb` | QRC applied to the Santa Fe laser time‑series prediction task (Python). |
+| `QRC Demo Aquila Submission.ipynb` | How to submit QRC jobs to QuEra’s Aquila quantum processor using the Bloqade Python SDK. |
 
- The tutorial on the simulation side is supplemented by two additional julia notebooks. `Classical Spin Reservoir Demo.ipynb` implements the classical spin reservoir on the MNIST data dervied from the quantum reservoir in the infinite (classical) spin limit and used extensively for comparisons in the paper. `QRC Demo Timeseries.ipynb` applies the quantum reservoir learning pipeline on the Santa Fe laser timeseries prediction task and introduces global pulse encoding along the way.
+---
 
- The second major part of the tutorial, `QRC Demo Aquila Submission.ipynb`, covers the simulations and experimental task submission to QuEra's Aquila based on [Bloqade](https://github.com/QuEraComputing/bloqade-python). The notebook follows the same quantum reservoir learning pipeline for MNIST dataset as in `QRC Demo MNIST.ipynb`, but adds the changes needed for efficient job submission through our python SDK, as well as direct data analysis with standard python machine learning SDKs.
+## Additional Resources
 
- You will also find a `requirements.txt` file which lets you install the necessary Python dependencies required to run the `QRC Demo Aquila Submission.ipynb` notebook as well as a `Project.toml` that has the Julia dependencies for all other notebooks.
+- **requirements.txt** – Lists all Python dependencies required for the notebooks.
+- **Bloqade Documentation** – <https://bloqade.readthedocs.io/> for detailed API usage.
 
+---
+
+## Citation
+
+If you use these tutorials in your work, please cite the original paper:
+
+> QuEra Computing, *Large‑scale quantum reservoir learning with an analog quantum computer*, arXiv:2407.02553 (2024).
+
+---
+
+## License
+
+This repository is licensed under the MIT License. See the `LICENSE` file for details.
